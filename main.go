@@ -16,6 +16,8 @@ func Handler(request alexa.Request) (alexa.Response, error) {
 func DispatchIntents(request alexa.Request) alexa.Response {
 	var response alexa.Response
 	switch request.Body.Intent.Name {
+	case "open":
+		response = hanleOpen()
 	case "allbins":
 		response = handleResponse(ALLBINS)
 	case "rubbish":
@@ -26,13 +28,23 @@ func DispatchIntents(request alexa.Request) alexa.Response {
 		response = handleResponse(FOOD)
 	case alexa.HelpIntent:
 		response = handleHelp()
+	case alexa.CancelIntent:
+		response = alexa.NewSimpleResponse("Goodbye", "Goodbye")
 	}
 
 	return response
 }
 
+
+func hanleOpen() alexa.Response {
+	return alexa.NewSimpleResponse("Welcome to Merton Bins",
+		"If you're unsure what to do, ask me for help.")
+}
+
+
 func handleHelp() alexa.Response {
-	return alexa.NewSimpleResponse("Hello", "Hope you enjoy the app")
+	return alexa.NewSimpleResponse("Need Help?",
+		"Try asking me when are all the bins collected next or when will the food waste be collected next.")
 }
 
 func handleResponse(collectionType int) alexa.Response {
